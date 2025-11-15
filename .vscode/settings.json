@@ -1,0 +1,32 @@
+{
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.tabSize": 3,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+
+	// Prettier настройки для этого проекта
+	"prettier.semi": false,
+	"prettier.useTabs": true,
+	"prettier.tabWidth": 3,
+	"prettier.singleQuote": false,
+	"prettier.printWidth": 100,
+
+	// Отключить конфликтующие настройки
+	"javascript.format.semicolons": "remove",
+	"typescript.format.semicolons": "remove",
+
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+
+	"[vue]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}

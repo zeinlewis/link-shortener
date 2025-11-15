@@ -2,7 +2,12 @@
 export default defineNuxtConfig({
 	compatibilityDate: '2025-07-15',
 	devtools: { enabled: true },
-	modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt'],
+	modules: [
+		'@nuxtjs/tailwindcss',
+		'shadcn-nuxt',
+		'@pinia/nuxt',
+		'@nuxt/eslint',
+	],
 	shadcn: {
 		prefix: '',
 		componentDir: './components/ui',
