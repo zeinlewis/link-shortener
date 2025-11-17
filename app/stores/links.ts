@@ -22,7 +22,7 @@ export const useLinksStore = defineStore("links", () => {
 				body: payload,
 			})
 
-			links.value.push(newLink)
+			links.value.unshift(newLink)
 			return newLink
 		} catch (err: any) {
 			error.value = err.data?.statusMessage || err.message || "Failed to create link"
