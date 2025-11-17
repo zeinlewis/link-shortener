@@ -60,9 +60,7 @@ const copyToClipboard = async (slug: string) => {
 </script>
 
 <template>
-	<!-- Внешний контейнер - занимает всю высоту экрана, серый градиент -->
 	<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-		<!-- Центрированный контейнер с максимальной шириной -->
 		<div class="container mx-auto px-4 py-12 max-w-3xl">
 			<!-- Заголовок страницы -->
 			<div class="text-center mb-12">
@@ -73,12 +71,6 @@ const copyToClipboard = async (slug: string) => {
 			<!-- Форма ввода - белая карточка с тенью -->
 			<div class="bg-white rounded-lg shadow-lg p-6 mb-8">
 				<div class="flex gap-3">
-					<!-- 
-            Input компонент:
-            - v-model - двустороннее связывание с targetUrl
-            - :disabled - блокируется когда идет загрузка
-            - @keypress - слушаем нажатие Enter
-          -->
 					<Input
 						v-model="targetUrl"
 						placeholder="Enter your long URL here..."
@@ -86,18 +78,11 @@ const copyToClipboard = async (slug: string) => {
 						:disabled="linksStore.loading"
 						@keyup.enter="handleSubmit()"
 					/>
-
-					<!-- 
-            Button компонент:
-            - :disabled - блокируется если loading=true ИЛИ поле пустое
-            - @click - вызываем handleSubmit при клике
-          -->
 					<Button
 						:disabled="linksStore.loading || !targetUrl.trim()"
 						class="px-6"
 						@click="handleSubmit"
 					>
-						<!-- Условный текст: "Creating..." во время загрузки, иначе "Shorten" -->
 						{{ linksStore.loading ? "Creating..." : "Shorten" }}
 					</Button>
 				</div>
@@ -123,10 +108,6 @@ const copyToClipboard = async (slug: string) => {
 			<div v-if="linksStore.links.length > 0" class="space-y-4">
 				<h2 class="text-xl font-semibold text-slate-900 mb-4">Your Short Links</h2>
 
-				<!-- 
-          v-for - цикл по всем ссылкам
-          :key="link.id" - уникальный ключ для Vue (для оптимизации рендеринга)
-        -->
 				<div
 					v-for="link in linksStore.links"
 					:key="link.id"
@@ -168,7 +149,6 @@ const copyToClipboard = async (slug: string) => {
               Условно показываем либо галочку (если скопировано), либо иконку копирования
             -->
 						<Button variant="outline" size="sm" @click="copyToClipboard(link.slug)">
-							<!-- v-if - показываем галочку только если этот slug был скопирован -->
 							<span v-if="copiedSlug === link.slug">✓ Copied!</span>
 							<span v-else>Copy</span>
 						</Button>
