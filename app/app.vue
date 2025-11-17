@@ -1,26 +1,32 @@
 <script lang="ts" setup>
-import { useCounterStore } from "./stores/counter"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useLinksStore } from "~/stores/links"
+const linksStore = useLinksStore()
 
-const counter = useCounterStore()
+const targetUrl = ref("")
+
+const handleSubmit = async () => {
+	try {
+		await linksStore.createLink({ targetUrl: targetUrl.value })
+		targetUrl.value = ""
+	} catch (err) {
+		console.error("Error shortening link:", err)
+	}
+}
 </script>
 
 <template>
-	<div>
-		<h2 class="text-3xl font-bold underline">Counter: {{ counter.count }}</h2>
-		<button @click="counter.increment">Increment</button>
-		<button @click="counter.decrement">Decrement</button>
+	<div class="container p-6 flex gap-6">
+		<Input v-model="targetUrl" placeholder="Enter URL" />
+		<Button :disabled="linksStore.loading" @click="handleSubmit">
+			{{ linksStore.loading ? "Loading..." : "Create Link" }}
+		</Button>
 
-		<h1 class="text-2xl">Link Shortener</h1>
-		<p>Shorten your links easily and quickly!</p>
-		<div>
-			<p>Enter your URL below:</p>
-			<input type="text" placeholder="https://example.com" />
+		<p v-if="linksStore.error" class="error">{{ linksStore.error }}</p>
+
+		<div v-for="link in linksStore.links" :key="link.id">
+			{{ link.targetUrl }} -> {{ link.slug }}
 		</div>
-
-		<ul>
-			<li>Shortened URL 1</li>
-			<li>Shortened URL 2</li>
-			<li>Shortened URL 3</li>
-		</ul>
 	</div>
 </template>
