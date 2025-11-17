@@ -1,4 +1,5 @@
 import type { Link } from "@/types/link"
+import axios from "axios"
 import { defineStore } from "pinia"
 
 interface CreateLinkPayload {
@@ -17,10 +18,7 @@ export const useLinksStore = defineStore("links", () => {
 		error.value = null
 
 		try {
-			const newLink = await $fetch<Link>("/api/links", {
-				method: "POST",
-				body: payload,
-			})
+			const newLink = await axios.post<Link>("/api/links", payload).then((res) => res.data)
 
 			links.value.unshift(newLink)
 			return newLink
@@ -37,7 +35,7 @@ export const useLinksStore = defineStore("links", () => {
 		error.value = null
 
 		try {
-			const fetchedLinks = await $fetch<Link[]>("/api/links")
+			const fetchedLinks = await axios.get<Link[]>("/api/links").then((res) => res.data)
 			links.value = fetchedLinks
 		} catch (err: any) {
 			error.value = err.data?.statusMessage || err.message || "Failed to fetch links"

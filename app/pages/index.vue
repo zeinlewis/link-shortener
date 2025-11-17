@@ -10,10 +10,15 @@ const targetUrl = ref("")
 // null = ничего не скопировано, string = показываем "Copied!" для этого slug
 const copiedSlug = ref<string | null>(null)
 
+onMounted(() => {
+	linksStore.fetchLinks()
+})
+
 const handleSubmit = async () => {
 	if (!targetUrl.value.trim()) return
 
 	try {
+		linksStore.error = null
 		await linksStore.createLink({ targetUrl: targetUrl.value })
 		targetUrl.value = ""
 	} catch (err) {
@@ -21,10 +26,18 @@ const handleSubmit = async () => {
 	}
 }
 
+// useRequestURL() - Nuxt composable, работает и на сервере, и на клиенте
+// Возвращает полный URL текущего запроса
+const currentUrl = useRequestURL()
+
+// Берем origin из requestURL (протокол + хост)
+// Например: "http://localhost:3000" или "https://yourdomain.com"
+const origin = currentUrl.origin
+
 // Функция генерирует полный URL для короткой ссылки
 // window.location.origin = "http://localhost:3000" - Результат: "http://localhost:3000/r/abc123"
 const getShortUrl = (slug: string) => {
-	return `${window.location.origin}/r/${slug}`
+	return `${origin}/r/${slug}`
 }
 
 // Функция копирования в буфер обмена
@@ -42,13 +55,6 @@ const copyToClipboard = async (slug: string) => {
 		}, 2000)
 	} catch (err) {
 		console.error("Failed to copy:", err)
-	}
-}
-
-// Обработчик нажатия Enter в поле ввода
-const handleKeyPress = (event: KeyboardEvent) => {
-	if (event.key === "Enter") {
-		handleSubmit()
 	}
 }
 </script>
@@ -78,7 +84,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
 						placeholder="Enter your long URL here..."
 						class="flex-1"
 						:disabled="linksStore.loading"
-						@keypress="handleKeyPress"
+						@keyup.enter="handleSubmit()"
 					/>
 
 					<!-- 
