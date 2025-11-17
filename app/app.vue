@@ -1,5 +1,15 @@
+<script lang="ts" setup>
+import { useCounterStore } from "./stores/counter"
+
+const counter = useCounterStore()
+</script>
+
 <template>
 	<div>
+		<h2 class="text-3xl font-bold underline">Counter: {{ counter.count }}</h2>
+		<button @click="counter.increment">Increment</button>
+		<button @click="counter.decrement">Decrement</button>
+
 		<h1 class="text-2xl">Link Shortener</h1>
 		<p>Shorten your links easily and quickly!</p>
 		<div>
@@ -14,10 +24,3 @@
 		</ul>
 	</div>
 </template>
-
-<script lang="ts" setup>
-const x = 2
-const y = 3
-
-console.log(x + y)
-</script>
