@@ -7,7 +7,7 @@ export const useFetchLinks = () => {
 		key: "links",
 		onResponse({ response }) {
 			if (response._data) {
-				linksStore.setLinks(response._data)
+				linksStore.replaceLinks(response._data)
 			}
 		},
 		onResponseError({ response }) {
@@ -17,10 +17,5 @@ export const useFetchLinks = () => {
 		},
 	})
 
-	return {
-		links: data,
-		pending,
-		error,
-		refresh,
-	}
+	return { links: data, pending, error, refresh }
 }

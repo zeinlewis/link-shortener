@@ -1,36 +1,17 @@
 import type { Link } from "@/types/link"
-import axios from "axios"
 import { defineStore } from "pinia"
-
-interface CreateLinkPayload {
-	targetUrl: string
-}
 
 export const useLinksStore = defineStore("links", () => {
 	// State
 	const links = ref<Link[]>([])
-	const loading = ref(false)
 	const error = ref<string | null>(null)
 
-	// Actions
-	const createLink = async (payload: CreateLinkPayload) => {
-		loading.value = true
-		error.value = null
-
-		try {
-			const newLink = await axios.post<Link>("/api/links", payload).then((res) => res.data)
-
-			// links.value.unshift(newLink)
-			return newLink
-		} catch (err: any) {
-			error.value = err.data?.statusMessage || err.message || "Failed to create link"
-			throw err
-		} finally {
-			loading.value = false
-		}
+	// Setter
+	const addLink = (newLink: Link) => {
+		links.value.unshift(newLink)
 	}
 
-	const setLinks = (newLinks: Link[]) => {
+	const replaceLinks = (newLinks: Link[]) => {
 		links.value = newLinks
 	}
 
@@ -45,14 +26,11 @@ export const useLinksStore = defineStore("links", () => {
 	return {
 		// State
 		links,
-		loading,
 		error,
 
-		// Actions
-		createLink,
-
 		// Setters
-		setLinks,
+		replaceLinks,
+		addLink,
 		setError,
 		clearError,
 	}

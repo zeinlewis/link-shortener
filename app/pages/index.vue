@@ -6,7 +6,8 @@ import { useLinksStore } from "@/stores/links"
 
 const linksStore = useLinksStore()
 
-const { links, pending, error: fetchError, refresh } = useFetchLinks()
+const { pending, error: fetchError, refresh } = useFetchLinks()
+const { createLink, loading } = useCreateLink()
 
 const targetUrl = ref("")
 
@@ -14,12 +15,8 @@ const handleSubmit = async () => {
 	if (!targetUrl.value.trim()) return
 
 	try {
-		linksStore.clearError()
-		await linksStore.createLink({ targetUrl: targetUrl.value })
+		await createLink({ targetUrl: targetUrl.value.trim() })
 		targetUrl.value = ""
-
-		// Обновляем список ссылок после создания новой
-		await refresh()
 	} catch (err) {
 		console.error("Error shortening link:", err)
 	}
@@ -42,15 +39,11 @@ const handleSubmit = async () => {
 						v-model="targetUrl"
 						placeholder="Enter your long URL here..."
 						class="flex-1"
-						:disabled="linksStore.loading"
+						:disabled="loading"
 						@keyup.enter="handleSubmit()"
 					/>
-					<Button
-						:disabled="linksStore.loading || !targetUrl.trim()"
-						class="px-6"
-						@click="handleSubmit"
-					>
-						{{ linksStore.loading ? "Creating..." : "Shorten" }}
+					<Button :disabled="loading || !targetUrl.trim()" class="px-6" @click="handleSubmit">
+						{{ loading ? "Creating..." : "Shorten" }}
 					</Button>
 				</div>
 
