@@ -6,21 +6,20 @@ import { useLinksStore } from "@/stores/links"
 
 const linksStore = useLinksStore()
 
-const targetUrl = ref("")
-// Переменная для отслеживания, какой slug был скопирован
-// null = ничего не скопировано, string = показываем "Copied!" для этого slug
+const { links, pending, error: fetchError, refresh } = useFetchLinks()
 
-onMounted(() => {
-	linksStore.fetchLinks()
-})
+const targetUrl = ref("")
 
 const handleSubmit = async () => {
 	if (!targetUrl.value.trim()) return
 
 	try {
-		linksStore.error = null
+		linksStore.clearError()
 		await linksStore.createLink({ targetUrl: targetUrl.value })
 		targetUrl.value = ""
+
+		// Обновляем список ссылок после создания новой
+		await refresh()
 	} catch (err) {
 		console.error("Error shortening link:", err)
 	}
@@ -32,11 +31,11 @@ const handleSubmit = async () => {
 		<div class="container mx-auto px-4 py-12 max-w-3xl">
 			<!-- Заголовок страницы -->
 			<div class="text-center mb-12">
-				<h1 class="text-4xl font-bold text-slate-900 mb-3">Short Link Generator</h1>
+				<h1 class="text-4xl font-bold text-slate-900 mb-3">Link Shortener</h1>
 				<p class="text-slate-600">Transform long URLs into short, shareable links</p>
 			</div>
 
-			<!-- Форма ввода - белая карточка с тенью -->
+			<!-- Форма ввода -->
 			<div class="bg-white rounded-lg shadow-lg p-6 mb-8">
 				<div class="flex gap-3">
 					<Input
@@ -55,14 +54,23 @@ const handleSubmit = async () => {
 					</Button>
 				</div>
 
-				<!-- Блок ошибки: v-if - показывается только если linksStore.error не null
-          	Красный фон и красный текст для визуального выделения ошибки -->
+				<!-- Ошибка создание ссылки -->
 				<div
 					v-if="linksStore.error"
 					class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md"
 				>
 					<p class="text-red-600 text-sm">{{ linksStore.error }}</p>
 				</div>
+
+				<!-- Ошибка загрузки списка -->
+				<div v-if="fetchError" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+					<p class="text-red-600 text-sm">Failed to load links</p>
+				</div>
+			</div>
+
+			<!-- Состояние загрузки -->
+			<div v-if="pending" class="text-center py-12 bg-white rounded-lg shadow-md">
+				<p class="text-slate-500">Loading links...</p>
 			</div>
 
 			<!-- Список ссылок -->

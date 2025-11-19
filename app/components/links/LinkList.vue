@@ -15,7 +15,7 @@ const origin = currentUrl.origin
 // Функция генерирует полный URL для короткой ссылки
 // window.location.origin = "http://localhost:3000" - Результат: "http://localhost:3000/r/abc123"
 const getShortUrl = (slug: string) => {
-	return `${origin}/r/${slug}`
+	return `${origin}/${slug}`
 }
 
 // Функция копирования в буфер обмена

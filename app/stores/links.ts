@@ -20,7 +20,7 @@ export const useLinksStore = defineStore("links", () => {
 		try {
 			const newLink = await axios.post<Link>("/api/links", payload).then((res) => res.data)
 
-			links.value.unshift(newLink)
+			// links.value.unshift(newLink)
 			return newLink
 		} catch (err: any) {
 			error.value = err.data?.statusMessage || err.message || "Failed to create link"
@@ -30,19 +30,12 @@ export const useLinksStore = defineStore("links", () => {
 		}
 	}
 
-	const fetchLinks = async () => {
-		loading.value = true
-		error.value = null
+	const setLinks = (newLinks: Link[]) => {
+		links.value = newLinks
+	}
 
-		try {
-			const fetchedLinks = await axios.get<Link[]>("/api/links").then((res) => res.data)
-			links.value = fetchedLinks
-		} catch (err: any) {
-			error.value = err.data?.statusMessage || err.message || "Failed to fetch links"
-			throw err
-		} finally {
-			loading.value = false
-		}
+	const setError = (message: string) => {
+		error.value = message
 	}
 
 	const clearError = () => {
@@ -57,7 +50,10 @@ export const useLinksStore = defineStore("links", () => {
 
 		// Actions
 		createLink,
-		fetchLinks,
+
+		// Setters
+		setLinks,
+		setError,
 		clearError,
 	}
 })

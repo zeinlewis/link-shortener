@@ -15,4 +15,11 @@ export const storage = {
 	getLinkBySlug(slug: string) {
 		return links.find((l) => l.slug === slug)
 	},
+
+	incrementClicks(slug: string) {
+		const link = links.find((l) => l.slug === slug)
+		if (link) {
+			link.clicks++
+		}
+	},
 }
