@@ -6,16 +6,32 @@ import { useLinksStore } from "@/stores/links"
 
 const linksStore = useLinksStore()
 
-const { pending, error: fetchError, refresh } = useFetchLinks()
+const { pending, error: fetchError } = useFetchLinks()
 const { createLink, loading } = useCreateLink()
 
 const targetUrl = ref("")
 
+const isValidUrl = (url: string): boolean => {
+	try {
+		new URL(url)
+		return true
+	} catch {
+		return false
+	}
+}
+
 const handleSubmit = async () => {
-	if (!targetUrl.value.trim()) return
+	const trimmedUrl = targetUrl.value.trim()
+	if (!trimmedUrl) return
+
+	if (!isValidUrl(trimmedUrl)) {
+		linksStore.setError("Please enter a valid URL.")
+		return
+	}
 
 	try {
-		await createLink({ targetUrl: targetUrl.value.trim() })
+		linksStore.clearError()
+		await createLink({ targetUrl: trimmedUrl })
 		targetUrl.value = ""
 	} catch (err) {
 		console.error("Error shortening link:", err)
