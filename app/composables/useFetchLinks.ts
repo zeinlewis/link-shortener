@@ -1,4 +1,5 @@
 import type { Link } from "@/types/link"
+import { getApiErrorMessage } from "@/utils/error"
 
 export const useFetchLinks = () => {
 	const linksStore = useLinksStore()
@@ -11,8 +12,7 @@ export const useFetchLinks = () => {
 			}
 		},
 		onResponseError({ response }) {
-			// Используем optional chaining и type assertion
-			const errorMessage = (response._data as any)?.statusMessage || "Failed to fetch links"
+			const errorMessage = getApiErrorMessage(response._data, "Failed to fetch links")
 			linksStore.setError(errorMessage)
 		},
 	})

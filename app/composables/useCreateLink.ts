@@ -1,4 +1,5 @@
 import type { Link } from "@/types/link"
+import { getApiErrorMessage } from "@/utils/error"
 
 interface CreateLinkPayload {
 	targetUrl: string
@@ -20,8 +21,8 @@ export const useCreateLink = () => {
 
 			linksStore.addLink(newLink)
 			return newLink
-		} catch (err: any) {
-			const errorMessage = err.data?.statusMessage || err.message || "Failed to create link"
+		} catch (err) {
+			const errorMessage = getApiErrorMessage(err, "Failed to create link")
 			linksStore.setError(errorMessage)
 			throw err
 		} finally {
