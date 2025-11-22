@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import LinkAnalyst from "@/components/links/LinkAnalyst.vue"
 import LinkList from "@/components/links/LinkList.vue"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -47,6 +48,9 @@ const handleSubmit = async () => {
 				<h1 class="text-4xl font-bold text-slate-900 mb-3">Link Shortener</h1>
 				<p class="text-slate-600">Transform long URLs into short, shareable links</p>
 			</div>
+
+			<!-- Link Analyst -->
+			<LinkAnalyst />
 
 			<!-- Форма ввода -->
 			<div class="bg-white rounded-lg shadow-lg p-6 mb-8">
