@@ -1,33 +1,20 @@
 <script setup lang="ts">
 import { useLinksStore } from "@/stores/links"
+import { useShortUrl } from "~/composables/useLink"
+
 const linksStore = useLinksStore()
+
+const { getShortUrl, copyLink } = useShortUrl()
 
 const copiedSlug = ref<string | null>(null)
 
-// useRequestURL() - Nuxt composable, работает и на сервере, и на клиенте
-// Возвращает полный URL текущего запроса
-const currentUrl = useRequestURL()
-
-// Берем origin из requestURL (протокол + хост)
-// Например: "http://localhost:3000" или "https://yourdomain.com"
-const origin = currentUrl.origin
-
-// Функция генерирует полный URL для короткой ссылки
-// window.location.origin = "http://localhost:3000" - Результат: "http://localhost:3000/r/abc123"
-const getShortUrl = (slug: string) => {
-	return `${origin}/${slug}`
-}
-
 // Функция копирования в буфер обмена
-const copyToClipboard = async (slug: string) => {
+const handleCopy = async (slug: string) => {
 	try {
-		// navigator.clipboard - современный API браузера для копирования
-		await navigator.clipboard.writeText(getShortUrl(slug))
+		await copyLink(slug)
 
-		// Устанавливаем скопированный slug, чтобы показать "Copied!"
 		copiedSlug.value = slug
 
-		// Через 2 секунды сбрасываем состояние "скопировано"
 		setTimeout(() => {
 			copiedSlug.value = null
 		}, 2000)
@@ -82,7 +69,7 @@ const copyToClipboard = async (slug: string) => {
               @click - вызываем copyToClipboard при клике
               Условно показываем либо галочку (если скопировано), либо иконку копирования
             -->
-					<Button variant="outline" size="sm" @click="copyToClipboard(link.slug)">
+					<Button variant="outline" size="sm" @click="handleCopy(link.slug)">
 						<span v-if="copiedSlug === link.slug">✓ Copied!</span>
 						<span v-else>Copy</span>
 					</Button>

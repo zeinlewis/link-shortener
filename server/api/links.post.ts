@@ -1,7 +1,8 @@
-import { customAlphabet } from 'nanoid'
-import { storage } from '../utils/storage'
+import { isValidUrl } from "@/utils/url"
+import { customAlphabet } from "nanoid"
+import { storage } from "../utils/storage"
 
-const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', 6)
+const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 6)
 
 export default defineEventHandler(async (event) => {
 	const { targetUrl } = await readBody(event)
@@ -14,9 +15,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// URL validation
-	try {
-		new URL(targetUrl)
-	} catch (e) {
+	if (!isValidUrl(targetUrl)) {
 		throw createError({
 			statusCode: 400,
 			statusMessage: "Invalid URL",

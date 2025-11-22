@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-const { totalLinks, totalClicks, topLink } = useLinksStore()
+import { useShortUrl } from "@/composables/useLink"
+import { useLinksStore } from "@/stores/links"
 
-const getShortUrl = (slug: string) => {
-	return `${window.location.origin}/${slug}`
-}
+const { totalLinks, totalClicks, topLink } = useLinksStore()
+const { getShortUrl } = useShortUrl()
 </script>
 
 <template>

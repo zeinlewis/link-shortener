@@ -4,6 +4,7 @@ import LinkList from "@/components/links/LinkList.vue"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useLinksStore } from "@/stores/links"
+import { isValidUrl } from "@/utils/url"
 
 const linksStore = useLinksStore()
 
@@ -11,15 +12,6 @@ const { pending, error: fetchError } = useFetchLinks()
 const { createLink, loading } = useCreateLink()
 
 const targetUrl = ref("")
-
-const isValidUrl = (url: string): boolean => {
-	try {
-		new URL(url)
-		return true
-	} catch {
-		return false
-	}
-}
 
 const handleSubmit = async () => {
 	const trimmedUrl = targetUrl.value.trim()
