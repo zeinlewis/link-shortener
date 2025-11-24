@@ -1,4 +1,3 @@
-// import { storage } from "../../utils/storage"
 import { eq } from "drizzle-orm"
 import { db } from "../../db/client"
 import { linksTable } from "../../db/schema"
@@ -14,8 +13,6 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const rows = await db.select().from(linksTable).where(eq(linksTable.slug, slug)).limit(1)
-
-	console.log("rows", rows)
 
 	const link = rows[0]
 
