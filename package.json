@@ -1,38 +1,47 @@
 {
-  "name": "short-link",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
-  },
-  "dependencies": {
-    "@nuxt/eslint": "^1.10.0",
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "@pinia/nuxt": "^0.11.3",
-    "@radix-icons/vue": "^1.0.0",
-    "@vueuse/core": "^14.0.0",
-    "axios": "^1.13.2",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "eslint": "^9.39.1",
-    "nanoid": "^5.1.6",
-    "nuxt": "^4.2.1",
-    "pinia": "^3.0.4",
-    "radix-vue": "^1.9.17",
-    "shadcn-nuxt": "^2.3.2",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7",
-    "vue": "^3.5.24",
-    "vue-router": "^4.6.3"
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.1",
-    "typescript": "^5.9.3"
-  }
+	"name": "short-link",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "nuxt build",
+		"dev": "nuxt dev",
+		"generate": "nuxt generate",
+		"preview": "nuxt preview",
+		"postinstall": "nuxt prepare",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
+		"db:studio": "drizzle-kit studio"
+	},
+	"dependencies": {
+		"@libsql/client": "^0.15.15",
+		"@nuxt/eslint": "^1.10.0",
+		"@nuxtjs/tailwindcss": "^6.14.0",
+		"@pinia/nuxt": "^0.11.3",
+		"@radix-icons/vue": "^1.0.0",
+		"@vueuse/core": "^14.0.0",
+		"axios": "^1.13.2",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"dotenv": "^17.2.3",
+		"drizzle-orm": "^0.44.7",
+		"eslint": "^9.39.1",
+		"firebase": "^12.6.0",
+		"nanoid": "^5.1.6",
+		"nuxt": "^4.2.1",
+		"pinia": "^3.0.4",
+		"radix-vue": "^1.9.17",
+		"shadcn-nuxt": "^2.3.2",
+		"tailwind-merge": "^3.4.0",
+		"tailwindcss-animate": "^1.0.7",
+		"vue": "^3.5.24",
+		"vue-router": "^4.6.3"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.1",
+		"drizzle-kit": "^0.31.7",
+		"tsx": "^4.20.6",
+		"typescript": "^5.9.3"
+	}
 }

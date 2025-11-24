@@ -4,4 +4,5 @@ export interface Link {
 	targetUrl: string
 	createdAt: string
 	clicks: number
+	lastClickedAt: string | null
 }
