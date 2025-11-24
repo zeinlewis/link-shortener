@@ -1,4 +1,7 @@
-import { storage } from "../../utils/storage"
+// import { storage } from "../../utils/storage"
+import { eq } from "drizzle-orm"
+import { db } from "../../db/client"
+import { linksTable } from "../../db/schema"
 
 export default defineEventHandler(async (event) => {
 	const slug = getRouterParam(event, "slug")
@@ -10,7 +13,11 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	const link = storage.getLinkBySlug(slug)
+	const rows = await db.select().from(linksTable).where(eq(linksTable.slug, slug)).limit(1)
+
+	console.log("rows", rows)
+
+	const link = rows[0]
 
 	if (!link) {
 		throw createError({
@@ -19,7 +26,13 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	storage.incrementClicks(slug)
+	// Update click statistics
+	db.update(linksTable)
+		.set({
+			clicks: link.clicks + 1,
+		})
+		.where(eq(linksTable.slug, slug))
+		.execute()
 
 	return link
 })
