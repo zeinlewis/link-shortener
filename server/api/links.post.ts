@@ -1,11 +1,14 @@
 import { isValidUrl } from "@/utils/url"
 import { customAlphabet } from "nanoid"
-import { storage } from "../utils/storage"
+import { db } from "../db/client"
+import { linksTable } from "../db/schema"
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 6)
 
 export default defineEventHandler(async (event) => {
 	const { targetUrl } = await readBody(event)
+
+	console.log("context db", event.context.db)
 
 	if (!targetUrl) {
 		throw createError({
@@ -22,15 +25,12 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	const link = {
-		id: crypto.randomUUID(),
+	const link: typeof linksTable.$inferInsert = {
 		slug: nanoid(),
 		targetUrl,
-		createdAt: new Date().toISOString(),
-		clicks: 0,
 	}
 
-	storage.addLink(link)
+	const [newLink] = await db.insert(linksTable).values(link).returning()
 
-	return link
+	return newLink
 })
