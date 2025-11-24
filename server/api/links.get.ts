@@ -1,6 +1,7 @@
-import { storage } from "../utils/storage"
+import { db } from "../db/client"
+import { linksTable } from "../db/schema"
 
 export default defineEventHandler(async () => {
-	const links = storage.getLinks()
+	const links = await db.select().from(linksTable)
 	return links
 })
