@@ -77,11 +77,9 @@ const handleCopy = async (slug: string) => {
 
 				<!-- Метаданные (дата и клики) -->
 				<div class="mt-3 flex gap-4 text-xs text-slate-500">
-					<!-- 
-              new Date(link.createdAt).toLocaleString() - конвертируем ISO дату
-              в читаемый формат типа "17.11.2025, 14:30:00"
-            -->
-					<span>Created: {{ new Date(link.createdAt).toLocaleString() }}</span>
+					<ClientOnly>
+						<span>Created: {{ new Date(link.createdAt).toLocaleString() }}</span>
+					</ClientOnly>
 					<span>Clicks: {{ link.clicks }}</span>
 				</div>
 			</div>
