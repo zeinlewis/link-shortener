@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 		'shadcn-nuxt',
 		'@pinia/nuxt',
 		'@nuxt/eslint',
+		'@nuxt/test-utils/module',
 	],
 	shadcn: {
 		prefix: '',
