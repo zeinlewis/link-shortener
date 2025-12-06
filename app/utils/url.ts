@@ -1,12 +1,7 @@
 /**
- * Утилиты для работы с URL
+ * Utils for URL.
  */
 
-/**
- * Проверяет валидность URL
- * @param url - URL для проверки
- * @returns true если URL валидный
- */
 export function isValidUrl(url: string): boolean {
 	try {
 		new URL(url)
